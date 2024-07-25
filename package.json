@@ -1,0 +1,29 @@
+{
+  "name": "pumpfun-listener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "tsc && tsx ./main.ts dev log",
+    "start": "tsc && node ./dist/main.js",
+    "db": "tsc && node ./dist/db/index.js",
+    "fetch": "tsx ./helpers/writetx.ts",
+    "decode": "tsx ./helpers/pumpfun/decoder.ts test save log"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@solana/buffer-layout": "^4.0.1",
+    "@solana/buffer-layout-utils": "^0.2.0",
+    "axios": "^1.7.2",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.5.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  }
+}
