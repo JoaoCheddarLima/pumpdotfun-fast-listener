@@ -8,7 +8,7 @@ import { log } from './helpers';
 import { BlockNotification } from './types/rpc';
 
 const server = new ws.Server({
-    port: 5715
+    port: Number(process.env.PARSER_PORT!)
 })
 
 export async function processBlockData(block_data: BlockNotification) {

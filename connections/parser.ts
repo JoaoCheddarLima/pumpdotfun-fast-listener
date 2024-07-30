@@ -1,26 +1,17 @@
+import { connect } from 'mongoose';
 import Websocket from 'ws';
 
 const {
-    PARSER_PORT
+    PARSER_PORT,
+    MONGO_URI
 } = process.env
 
 let socket: Websocket | null = null
 
-async function connectToMyDatabase() {
-    try {
-        //DB connection logic
-
-        return true
-    } catch (err) {
-        console.error(err)
-        return false
-    }
-}
-
 export async function startWss(processBlockData: (transactions: any) => void) {
     let processStarted = false
     let cacheQueue: any[] = []
-    let connectedToDB = false
+    let connectedToMongoose = false
 
     if (socket !== null) {
         socket.close()
@@ -34,7 +25,7 @@ export async function startWss(processBlockData: (transactions: any) => void) {
         }
     }, 1000)
 
-    socket = new Websocket('ws://localhost:' + PARSER_PORT)
+    socket = new Websocket('ws://sol_listener:' + PARSER_PORT)
 
     socket.on("close", (m) => {
         console.log(`[<>] Disconnected from WSS`)
@@ -44,14 +35,11 @@ export async function startWss(processBlockData: (transactions: any) => void) {
     socket.on("open", async () => {
         console.log(`[<>] Connected to WSS`)
 
-        await connectToMyDatabase()
-            .then((connected) => {
-                console.log("[<>] Connected to Database")
-                connectedToDB = connected
-            })
-            .catch(() => {
-                console.log("[X] Failed to connect to Database")
-                connectedToDB = false
+        connect(MONGO_URI!, {
+            autoIndex: true
+        })
+            .then(r => {
+                connectedToMongoose = true
             })
 
         setInterval(() => {
@@ -66,8 +54,7 @@ export async function startWss(processBlockData: (transactions: any) => void) {
 
         processStarted = true
 
-        //creates a cache for saving if trouble on db connection
-        if (connectedToDB) {
+        if (connectedToMongoose) {
             if (cacheQueue.length > 0) {
                 cacheQueue.forEach(
                     async (cache) => {

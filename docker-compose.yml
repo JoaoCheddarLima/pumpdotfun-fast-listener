@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  sol_listener:
+    image: sol_listener:latest
+  sol_db:
+    image: sol_db:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '12'
+          memory: '32GB'
+
+networks:
+  sol_network:
+    driver: bridge
