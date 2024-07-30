@@ -24,8 +24,6 @@ export async function processBlockData(block_data: BlockNotification) {
         server.clients.forEach(client => {
             client.send(msg);
         });
-
-        log(`[<] Worker for ${block_data.params.result.context.slot} finished in ${(Date.now() - nowStart) / 1000}s`);
     });
 }
 
