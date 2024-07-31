@@ -2,6 +2,7 @@ export enum TransactionInstructionType {
     CREATED = "created",
     SELL = "sell",
     BUY = "buy",
+    UPDATED_ACCOUNT_BALANCE = "updated_account_balance"
 }
 
 export interface TransactionInstructionCreatedEvent {
@@ -9,6 +10,12 @@ export interface TransactionInstructionCreatedEvent {
     timestamp: number,
     token_publickey?: string,
     user_publickey?: string
+}
+
+export interface TransactionInstructionUpdatedAccountBalanceEvent {
+    type: TransactionInstructionType.UPDATED_ACCOUNT_BALANCE,
+    user?: string,
+    new_balance: number
 }
 
 export interface TransactionInstructionSwapEvent {

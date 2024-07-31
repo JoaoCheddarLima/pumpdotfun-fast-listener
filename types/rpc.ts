@@ -68,7 +68,7 @@ export interface Block {
     blockhash: string;
 }
 
-interface BlockNotification {
+export interface BlockNotification {
     jsonrpc: string;
     method: string;
     params: {
@@ -101,6 +101,7 @@ export interface DecodedTransactionData {
     is_buy?: boolean;
     virtual_token_reserves?: number;
     virtual_sol_reserves?: number;
+    new_balance: number;
     user?: string;
     timestamp: number;
     index: number;

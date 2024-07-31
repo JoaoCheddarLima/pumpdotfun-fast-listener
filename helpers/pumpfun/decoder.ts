@@ -4,14 +4,15 @@ import axios from 'axios';
 import bs58 from 'bs58';
 
 import {
-  r,
-  save,
+    r,
+    save,
 } from '../';
 import { Transaction } from '../../types/rpc';
 import {
-  getAccountsForCreateInstructions,
-  getAccountsFromInstructions,
-  TransactionInstructionType,
+    getAccountsForCreateInstructions,
+    getAccountsFromInstructions,
+    TransactionInstructionType,
+    TransactionInstructionUpdatedAccountBalanceEvent,
 } from './';
 import { PUMPFUN_SWAP_DATA_STRUCT } from './struct';
 
@@ -41,6 +42,21 @@ function decodePump(data: string) {
         return newStruct
     } catch (err) {
         return null
+    }
+}
+
+function decodeUpdatedUser(tx: Transaction, user_publickey: string): TransactionInstructionUpdatedAccountBalanceEvent {
+    const postBalances = tx.meta.postBalances
+    const userIndex = tx.transaction.message.accountKeys.findIndex((data) => {
+        return data.pubkey === user_publickey
+    })
+
+    const new_balance = postBalances[userIndex] / 10 ** 9
+
+    return {
+        type: TransactionInstructionType.UPDATED_ACCOUNT_BALANCE,
+        user: user_publickey,
+        new_balance
     }
 }
 
@@ -79,6 +95,8 @@ export function decodeTransactionInfo(tx: Transaction, timestamp: number) {
                     const decoded = decodePump(innerInstruction.data)
 
                     if (!decoded) return;
+
+                    decodedTransactions.push(decodeUpdatedUser(tx, decoded.user))
 
                     decodedTransactions.push({
                         ...decoded,
