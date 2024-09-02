@@ -18,6 +18,20 @@ To run this project, make sure you have a node version that supports **worker th
 
 Now you have all the basics set up!
 
+## Getting Started
+
+To get started with this project, you need to implement your database connection logic inside the [parser.ts](./connections/parser.ts) file or edit it as per your requirements. After establishing the connection, you can implement your data saving logic inside the [index.ts](./db/index.ts) file.
+
+## Running
+
+To run the project, follow these steps:
+
+1. Run the `yarn start` script to start an instance of the decoder and parser.
+
+2. Run the `yarn db` script to start the database listener and data saver. Separating the decoder and the database logic helps optimize the processing of Solana transactions, considering the volume of blocks and the number of transactions per second.
+
+By running these scripts, you can efficiently handle Solana transactions by decoding them separately and saving the data in the database. This approach takes advantage of JavaScript's event loop and allows for better performance and scalability.
+
 ## Development
 
 During the development of this project, we have provided some useful CLI commands that you can run using yarn:
@@ -42,19 +56,3 @@ Those are the scripts under the hood
     "decode": "tsx ./helpers/pumpfun/decoder.ts test save log"
 }
 ```
-## Getting Started
-
-To get started with this project, you need to implement your database connection logic inside the [parser.ts](./connections/parser.ts) file or edit it as per your requirements. After establishing the connection, you can implement your data saving logic inside the [index.ts](./db/index.ts) file.
-
-## Running
-
-To run the project, follow these steps:
-
-1. Run the `yarn start` script to start an instance of the decoder and parser.
-
-2. Run the `yarn db` script to start the database listener and data saver. Separating the decoder and the database logic helps optimize the processing of Solana transactions, considering the volume of blocks and the number of transactions per second.
-
-
-By running these scripts, you can efficiently handle Solana transactions by decoding them separately and saving the data in the database. This approach takes advantage of JavaScript's event loop and allows for better performance and scalability.
-
-
